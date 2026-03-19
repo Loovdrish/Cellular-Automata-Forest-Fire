@@ -9,6 +9,7 @@ At each instant, there is a probability that a forest fire begins by burning one
 ![image alt](https://github.com/Loovdrish/Cellular-Automata-Forest-Fire/blob/b7fa7f92d4bf6d8571831d18edaf6358c2859c1b/Forest_Fires_Appear.png)
 
 Burning cells propagate by burning trees around them. After burning, the tree gets completely burnt (shown in black).
+![image alt](https://github.com/Loovdrish/Cellular-Automata-Forest-Fire/blob/b5c6b3513eee904b8db867fa0e8abdf151d620a2/Forest_Fires_Propagate.png)
 
 After a tree got burnt, a new tree can grow in that same location. This possibility constitutes another key parameter.
 
