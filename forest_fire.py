@@ -131,7 +131,7 @@ h = 400
 prob_fire = 0.001
 prob_tree = 0.45
 simulation = Simulation(prob_fire, prob_tree, rows, cols)
-simulation.current_forest[5][5] = 1
+
 root = Tk()
 root.title("Forest Fire Cellular Automata")
 
