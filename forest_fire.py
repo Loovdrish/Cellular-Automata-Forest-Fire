@@ -105,6 +105,7 @@ class Simulation:
 def display_forest(forest_display, width, height, forest, num_rows, num_cols):
     sized_width = width / num_cols
     sized_height = height / num_rows
+    forest_display.delete("all")
     for i in range(num_cols):
         for j in range(num_rows):
             if(forest[j][i] == 2):
@@ -113,7 +114,7 @@ def display_forest(forest_display, width, height, forest, num_rows, num_cols):
                 color = "red"
             elif(forest[j][i] == 0):
                 color = "black"
-            
+
             forest_display.create_rectangle(i * sized_width, j * sized_height, (i + 1) * sized_width, (j + 1) * sized_height, fill = color)
 
 def update_canva(forest_display, width, height, forest, num_rows, num_cols):
