@@ -1,25 +1,6 @@
 from tkinter import *
 import random
 
-class Tree:
-    def __init__(self, state = "tree"):
-        self.state = state
-    
-class Forest:
-
-    def __init__(self, num_rows, num_cols):
-        self.num_rows = num_rows
-        self.num_cols = num_cols
-        self.forest = []
-        row = []
-        for i in range(num_rows):
-            for j in range(num_cols):
-                row.append(Tree("tree"))
-
-            self.forest.append(row)
-            row = []
-        
-
 class Simulation:
 
     def __init__(self, prob_fire, prob_tree, num_rows, num_cols):
@@ -27,19 +8,23 @@ class Simulation:
         self.PROB_TREE = prob_tree
         self.num_rows = num_rows
         self.num_cols = num_cols
-        self.current_forest = Forest(num_rows, num_cols)
-        self.next_forest = Forest(num_rows, num_cols)
-    
-
-    
+        self.current_forest, self.next_forest = [], []
+        for i in range(num_rows):
+            temp1, temp2 = [], []
+            for j in range(num_cols):
+                temp1.append(2)
+                temp2.append(2)
+            self.current_forest.append(temp1)
+            self.next_forest.append(temp2)
+        
     def display_forest(self):
         for r in range(self.num_rows):
             for c in range(self.num_cols):
-                if self.current_forest.forest[r][c].state == "tree":
+                if self.current_forest[r][c] == 2:
                     print(2, end = " ")
-                elif self.current_forest.forest[r][c].state == "burning":
+                elif self.current_forest[r][c] == 1:
                     print(1, end = " ")
-                elif self.current_forest.forest[r][c].state == "burnt":
+                elif self.current_forest[r][c] == 0:
                     print(0, end = " ")
             print()
     
@@ -47,15 +32,15 @@ class Simulation:
         # Updates that don't rely on close trees:
             
         # 1. If the tree is burning, it will be burnt in the next frame
-        if (current_forest.forest[row][col].state == "burning"):
-            next_forest.forest[row][col].state = "burnt"
+        if (current_forest[row][col] == 1):
+            next_forest[row][col] = 0
             return
         # 2. If the tree is is burnt, it will remain 
-        elif (current_forest.forest[row][col].state == "burnt"):
+        elif (current_forest[row][col] == 0):
             if(random.random() < self.PROB_TREE):
-                next_forest.forest[row][col].state = "tree"
+                next_forest[row][col] = 2
             else:
-                next_forest.forest[row][col].state = "burnt"
+                next_forest[row][col] = 0
             return
         
         # Check if the tree is close to a fire and update accordingly
@@ -87,25 +72,31 @@ class Simulation:
             elif(i == 8):
                 r = 1
                 c = 1
-            if ((0 <= row + r < current_forest.num_rows) and (0 <= col + c < current_forest.num_cols) and not(r == 0 and c == 0)):
+            if ((0 <= row + r < self.num_rows) and (0 <= col + c < self.num_cols) and not(r == 0 and c == 0)):
                 # The cell exists
                 # The cell is close to a fire
-                if ((current_forest.forest[r + row][c + col].state == "burning") and (current_forest.forest[row][col].state == "tree")):
-                    next_forest.forest[row][col].state = "burning"
+                if ((current_forest[r + row][c + col] == 1) and (current_forest[row][col] == 2)):
+                    next_forest[row][col] = 1
                     return
         
         # The tree is not burning, but may catch fire
-        if(current_forest.forest[row][col].state == "tree"):
+        if(current_forest[row][col] == 2):
             if(random.random() < self.PROB_FIRE):
-                next_forest.forest[row][col].state = "burning"
+                next_forest[row][col] = 1
             else:
-                next_forest.forest[row][col].state = "tree"
+                next_forest[row][col] = 2
             return
 
     
     def update_forest(self):
-        self.next_forest = Forest(num_rows = self.num_rows, num_cols = self.num_cols)
-        
+        # self.next_forest = Forest(num_rows = self.num_rows, num_cols = self.num_cols)
+        self.next_forest = []
+        for i in range(self.num_rows):
+            temp = []
+            for j in range(self.num_cols):
+                temp.append(2)
+            self.next_forest.append(temp)
+
         for r in range(self.num_rows):
             for c in range(self.num_cols):
                 self.update_tree(self.current_forest, self.next_forest, r, c)
@@ -117,11 +108,11 @@ def display_forest(forest_display, width, height, forest, num_rows, num_cols):
     sized_height = height / num_rows
     for i in range(num_cols):
         for j in range(num_rows):
-            if(forest.forest[j][i].state == "tree"):
+            if(forest[j][i] == 2):
                 color = "green"
-            elif(forest.forest[j][i].state == "burning"):
+            elif(forest[j][i] == 1):
                 color = "red"
-            elif(forest.forest[j][i].state == "burnt"):
+            elif(forest[j][i] == 0):
                 color = "black"
             
             forest_display.create_rectangle(i * sized_width, j * sized_height, (i + 1) * sized_width, (j + 1) * sized_height, fill = color)
@@ -137,10 +128,10 @@ rows = 20
 cols = 20
 w = 400
 h = 400
-prob_fire = 0.15
+prob_fire = 0.001
 prob_tree = 0.45
 simulation = Simulation(prob_fire, prob_tree, rows, cols)
-
+simulation.current_forest[5][5] = 1
 root = Tk()
 root.title("Forest Fire Cellular Automata")
 
