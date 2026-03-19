@@ -134,9 +134,9 @@ def update_canva(forest_display, width, height, forest, num_rows, num_cols):
 
 
 rows = 20
-cols = 20
-w = 400
-h = 400
+cols = 40
+w = 500
+h = 500
 prob_fire = 0.01
 prob_tree = 0.3
 simulation = Simulation(prob_fire, prob_tree, rows, cols)
@@ -144,7 +144,7 @@ simulation = Simulation(prob_fire, prob_tree, rows, cols)
 root = Tk()
 root.title("Forest Fire Cellular Automata")
 
-forest_display = Canvas(root, width = 400, height = 250, bg = "green")
+forest_display = Canvas(root, width = w, height = h, bg = "green")
 
 display_forest(forest_display, w, h, simulation.current_forest, rows, cols)
 
