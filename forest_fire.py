@@ -137,8 +137,8 @@ rows = 20
 cols = 20
 w = 400
 h = 400
-prob_fire = 0.01
-prob_tree = 0.99
+prob_fire = 0.15
+prob_tree = 0.45
 simulation = Simulation(prob_fire, prob_tree, rows, cols)
 
 root = Tk()
