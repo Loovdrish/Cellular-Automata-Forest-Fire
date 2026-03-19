@@ -134,11 +134,11 @@ def update_canva(forest_display, width, height, forest, num_rows, num_cols):
 
 
 rows = 20
-cols = 40
-w = 500
-h = 500
+cols = 20
+w = 400
+h = 400
 prob_fire = 0.01
-prob_tree = 0.3
+prob_tree = 0.99
 simulation = Simulation(prob_fire, prob_tree, rows, cols)
 
 root = Tk()
