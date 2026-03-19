@@ -12,5 +12,6 @@ Burning cells propagate by burning trees around them. After burning, the tree ge
 ![image alt](https://github.com/Loovdrish/Cellular-Automata-Forest-Fire/blob/b5c6b3513eee904b8db867fa0e8abdf151d620a2/Forest_Fires_Propagate.png)
 
 After a tree got burnt, a new tree can grow in that same location. This possibility constitutes another key parameter.
+![image alt](https://github.com/Loovdrish/Cellular-Automata-Forest-Fire/blob/3d54b77735d42ec59c6c65438daaa0481ffedb8d/Forest_Fires_After_Several_Iterations.png)
 
 To move from one instant to the next, click on the button "Next Frame".
