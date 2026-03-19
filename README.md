@@ -2,7 +2,10 @@
 Forest Fire is a cellular automata simulation that demonstrates the propagation of a forest fires.
 
 ## How Does It Work
-The simulation begins with a grid of green cells representing trees. At each instant, there is a probability that a forest fire begins by burning one of the trees. Burning trees are represented by red cells. 
+The simulation begins with a grid of green cells representing trees. 
+![image alt](https://github.com/Loovdrish/Cellular-Automata-Forest-Fire/blob/dd95e9ccf927a47edaf0a35139c53c05fef484e3/Grid_Trees.png)
+
+At each instant, there is a probability that a forest fire begins by burning one of the trees. Burning trees are represented by red cells. 
 
 Burning cells propagate by burning trees around them. After burning, the tree gets completely burnt (shown in black).
 
