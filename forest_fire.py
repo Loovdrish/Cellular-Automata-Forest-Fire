@@ -89,7 +89,6 @@ class Simulation:
 
     
     def update_forest(self):
-        # self.next_forest = Forest(num_rows = self.num_rows, num_cols = self.num_cols)
         self.next_forest = []
         for i in range(self.num_rows):
             temp = []
