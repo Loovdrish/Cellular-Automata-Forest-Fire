@@ -3,12 +3,14 @@ import random
 
 class Simulation:
 
-    def __init__(self, prob_fire, prob_tree, num_rows, num_cols):
+    def __init__(self, prob_fire, prob_tree, num_rows, num_cols, delta = 100, running = True):
         self.PROB_FIRE = prob_fire
         self.PROB_TREE = prob_tree
         self.num_rows = num_rows
         self.num_cols = num_cols
         self.current_forest, self.next_forest = [], []
+        self.delta = delta
+        self.running = running
         for i in range(num_rows):
             temp1, temp2 = [], []
             for j in range(num_cols):
@@ -35,7 +37,7 @@ class Simulation:
         if (current_forest[row][col] == 1):
             next_forest[row][col] = 0
             return
-        # 2. If the tree is is burnt, it will remain 
+        # 2. If the tree is is burnt, it will remain burnt
         elif (current_forest[row][col] == 0):
             if(random.random() < self.PROB_TREE):
                 next_forest[row][col] = 2
@@ -122,29 +124,82 @@ def update_canva(forest_display, width, height, forest, num_rows, num_cols):
     simulation.update_forest()
     display_forest(forest_display, width, height, forest, num_rows, num_cols)
 
+def auto_update():
+    if(simulation.running):
+        simulation.update_forest()
+        display_forest(forest_display, w, h, simulation.current_forest, rows, cols)
 
+    root.after(simulation.delta, auto_update)
 
-rows = 20
-cols = 20
+def click_and_fire(event):
+    col = int(event.x / (w / cols))
+    row = int(event.y / (h / rows))
+
+    if 0 <= row < rows and 0 <= col < cols:
+        simulation.current_forest[row][col] = 1
+
+    display_forest(forest_display, w, h, simulation.current_forest, rows, cols)
+
+def update_fields(fire_field, tree_field, delta_field):
+    simulation.PROB_FIRE = float(fire_field.get())
+    simulation.PROB_TREE = float(tree_field.get())
+    simulation.delta = int(delta_field.get())
+
+def pause_simulation():
+    simulation.running = False
+
+def resume_simulation():
+    simulation.running = True
+
+rows = 30
+cols = 30
 w = 400
 h = 400
 prob_fire = 0.001
-prob_tree = 0.45
-simulation = Simulation(prob_fire, prob_tree, rows, cols)
+prob_tree = 0.1
+delta = 1
+simulation = Simulation(prob_fire, prob_tree, rows, cols, delta)
 
 root = Tk()
 root.title("Forest Fire Cellular Automata")
+left = Frame(root)
+left.grid(row = 0, column = 0)
+Label(left, text = "FOREST FIRE").grid(row = 0, column = 0)
+
+parameters = Frame(left)
+parameters.grid(row = 1, column = 0)
+
+Label(parameters, text = "Prob of fire: ").grid(row = 0, column = 0)
+fire_field = Entry(parameters, width = 10)
+fire_field.grid(row = 0, column = 1)
+
+
+Label(parameters, text = "Prob of tree: ").grid(row = 1, column = 0)
+tree_field = Entry(parameters, width = 10)
+tree_field.grid(row = 1, column = 1)
+
+Label(parameters, text = "Delta: ").grid(row = 2, column = 0)
+delta_field = Entry(parameters, width = 10)
+delta_field.grid(row = 2, column = 1)
+
+button = Button(left, text="Update Parameters", width=25, command = lambda: update_fields(fire_field, tree_field, delta_field))
+button.grid(row = 2, column = 0)
+
+running_buttons = Frame(left)
+running_buttons.grid(row = 3, column = 0)
+
+pause_button  = Button(running_buttons, text = "Pause", width = 10, command = lambda : pause_simulation())
+pause_button.grid(row = 0, column = 0)
+
+resume_button  = Button(running_buttons, text = "Resume", width = 10, command = lambda : resume_simulation())
+resume_button.grid(row = 0, column = 1)
 
 forest_display = Canvas(root, width = w, height = h, bg = "green")
+forest_display.grid(row = 0, column = 1)
 
 display_forest(forest_display, w, h, simulation.current_forest, rows, cols)
-
-button = Button(root, text="Next Frame", width=25, command = lambda: update_canva(forest_display, w, h, simulation.current_forest, rows, cols))
-
-forest_display.pack()
-button.pack()
+forest_display.bind("<Button-1>", click_and_fire)
+root.after(simulation.delta, auto_update)
 
 root.mainloop()
-
-
 
