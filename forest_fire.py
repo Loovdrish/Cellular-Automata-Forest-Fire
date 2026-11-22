@@ -157,7 +157,7 @@ w = 400
 h = 400
 prob_fire = 0.001
 prob_tree = 0.1
-delta = 1
+delta = 100
 simulation = Simulation(prob_fire, prob_tree, rows, cols, delta)
 
 root = Tk()
@@ -172,15 +172,17 @@ parameters.grid(row = 1, column = 0)
 Label(parameters, text = "Prob of fire: ").grid(row = 0, column = 0)
 fire_field = Entry(parameters, width = 10)
 fire_field.grid(row = 0, column = 1)
-
+fire_field.insert(0, "0.001")
 
 Label(parameters, text = "Prob of tree: ").grid(row = 1, column = 0)
 tree_field = Entry(parameters, width = 10)
 tree_field.grid(row = 1, column = 1)
+tree_field.insert(0, "0.1")
 
 Label(parameters, text = "Delta: ").grid(row = 2, column = 0)
 delta_field = Entry(parameters, width = 10)
 delta_field.grid(row = 2, column = 1)
+delta_field.insert(0, "100")
 
 button = Button(left, text="Update Parameters", width=25, command = lambda: update_fields(fire_field, tree_field, delta_field))
 button.grid(row = 2, column = 0)
